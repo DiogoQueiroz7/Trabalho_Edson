@@ -27,7 +27,7 @@ const outono = [
     { nome: 'Bege claro', cor: 'rgb(210, 180, 140)' },
     { nome: 'Pêssego suave', cor: 'rgb(255, 218, 185)' },
     { nome: 'Marrom claro', cor: 'rgb(222, 184, 135)' },
-    { nome: 'Laranja pastel', cor: 'rgb(255, 160, 122)' } // Substituindo o vermelho vinho por um laranja pastel suave
+    { nome: 'Laranja pastel', cor: 'rgb(255, 160, 122)' }
   ];
 
 const inverno = [
@@ -36,42 +36,73 @@ const inverno = [
     { nome: 'Lavanda', cor: 'rgb(230, 230, 250)' },   
     { nome: 'Azul suave', cor: 'rgb(135, 206, 235)' },
     { nome: 'Azul profundo', cor: 'rgb(0, 191, 255)' }
-    
   ];
 
 let i_estacao = 0;
-let vet_estacao = primavera; // recebe o array
+let vet_estacao = primavera; 
+let intervalo; 
+let num_cor = 0;
+function calcula_estacao() {
+    if (intervalo) {
+        clearInterval(intervalo);
+    }
 
-function calcula_estacao()
-{
-    clearInterval(intervalo);
+    const num_mes = parseInt(document.getElementById('i_mes').value);
 
-    // aqui recebe-se o número do mês informado pelo usuário
-    // informa-se o nome do mês correspondente
-    // e calcula-se a estação do ano, conforme a meteorologia (vide arquivo observacoes.txt)
-    // daí, destaca-se a imagem da referida estação do ano
-    // e retiram-se os destaques de todas as demais
+    document.getElementById('nome_mes').innerText = mes[num_mes - 1];
 
+    if (num_mes >= 3 && num_mes <= 5) { 
+        i_estacao = 2; 
+        vet_estacao = outono;
+    } else if (num_mes >= 6 && num_mes <= 8) { 
+        i_estacao = 3; 
+        vet_estacao = inverno;
+    } else if (num_mes >= 9 && num_mes <= 11) { Novembro
+        i_estacao = 0; 
+        vet_estacao = primavera;
+    } else { 
+        i_estacao = 1; 
+        vet_estacao = verao;
+    }
+
+    document.getElementById('nome_estacao').innerText = estacao_ano[i_estacao];
+
+    const todasEstacoes = document.querySelectorAll('.estacao');
+    todasEstacoes.forEach((el, index) => {
+        if (index === i_estacao) {
+            el.style.border = '5px solid yellow'; 
+            el.style.backgroundColor = 'rgba(255, 255, 255, 0.2)';
+        } else {
+            el.style.border = 'none';
+            el.style.backgroundColor = 'transparent';
+        }
+    });
     
-    intervalo = setInterval(coresEstacao, 5000);
+    num_cor = 0; 
+    coresEstacao(); 
+    intervalo = setInterval(coresEstacao, 2000);
 }
 
-const intervalo = setInterval(coresEstacao, 0);
+function coresEstacao() {
+    const caixas_cores = document.querySelectorAll('.cor');
 
-let num_cor;
+    caixas_cores.forEach((caixa, index) => {
+        if (vet_estacao[index]) {
+            caixa.innerText = vet_estacao[index].nome;
+            caixa.style.backgroundColor = vet_estacao[index].cor;
+        } else {
+            caixa.innerText = '?';
+            caixa.style.backgroundColor = 'white';
+        }
+    });
 
 
-function coresEstacao(){
-
-    // Os elementos HTML da classe "cor" devem mostrar 
-    // os nomes das cores da estação do ano calculada 
-    // na função calcula_estacao() 
-    // e mudar o backgroundColor para estas cores.
-
-    // O background da elemento HTML associado à classe estacoes
-    // deverá alternar entre estas cores. 
-     
+    const estacoesDiv = document.getElementById('estacoes');
+    if (vet_estacao.length > 0) {
+        estacoesDiv.style.backgroundColor = vet_estacao[num_cor].cor;
+        num_cor = (num_cor + 1) % vet_estacao.length;
+    }
 }
 
 
-clearInterval(intervalo);
+window.onload = calcula_estacao;

@@ -42,6 +42,7 @@ let i_estacao = 0;
 let vet_estacao = primavera; 
 let intervalo; 
 let num_cor = 0;
+
 function calcula_estacao() {
     if (intervalo) {
         clearInterval(intervalo);
@@ -57,7 +58,7 @@ function calcula_estacao() {
     } else if (num_mes >= 6 && num_mes <= 8) { 
         i_estacao = 3; 
         vet_estacao = inverno;
-    } else if (num_mes >= 9 && num_mes <= 11) { Novembro
+    } else if (num_mes >= 9 && num_mes <= 11) { 
         i_estacao = 0; 
         vet_estacao = primavera;
     } else { 
@@ -103,6 +104,5 @@ function coresEstacao() {
         num_cor = (num_cor + 1) % vet_estacao.length;
     }
 }
-
 
 window.onload = calcula_estacao;
